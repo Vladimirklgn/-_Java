@@ -1,0 +1,89 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+
+        Scanner scn = new Scanner(System.in);
+        System.out.println("Введите выражение: ");
+        String input = scn.nextLine();
+        String result = calc(input);
+        System.out.println(result);
+
+    }
+
+    public static String calc(String input) throws Exception {
+        String[] operands = input.split(" ");
+
+        if (operands.length != 3) {
+            throw new Exception("Неподдерживаемое количество операндов");
+        }
+
+        String operand1 = operands[0];
+        String operator = operands[1];
+        String operand2 = operands[2];
+
+        int n1, n2;
+
+        if (isRoman(operand1) && isRoman(operand2)) {
+            n1 = convertToArabian(operand1);
+            n2 = convertToArabian(operand2);
+        } else {
+            n1 = Integer.parseInt(operand1);
+            n2 = Integer.parseInt(operand2);
+        }
+
+        int result = getResult(operator, n1, n2);
+
+        if (isRoman(operand1) && isRoman(operand2)) {
+            if (result == 0) {
+                throw new Exception("В римских числах нет нуля");
+            }
+            return convertToRoman(result);
+        } else if (!isRoman(operand1) && !isRoman(operand2)) {
+            return String.valueOf(result);
+        } else {
+            throw new Exception("Невозможное выражение");
+        }
+    }
+
+    private static int getResult(String operator, int n1, int n2) throws Exception {
+        return switch (operator) {
+            case "+" -> n1 + n2;
+            case "-" -> n1 - n2;
+            case "*" -> n1 * n2;
+            case "/" -> n1 / n2;
+            default -> throw new Exception("Неподдерживаемая операция");
+        };
+    }
+
+    private static String[] romanNum = new String[]{"0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI",
+            "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV",
+            "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII",
+            "XXXVIII", "XXXIX", "XL", "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L",
+            "LI", "LII", "LIII", "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX", "LXI", "LXII", "LXIII", "LXIV", "LXV",
+            "LXVI", "LXVII", "LXVIII", "LXIX", "LXX", "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII",
+            "LXXVIII", "LXXIX", "LXXX", "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII",
+            "LXXXIX", "XC", "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
+
+    private static boolean isRoman(String val) {
+        for (int i = 0; i < romanNum.length; i++) {
+            if (val.equals(romanNum[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static int convertToArabian(String roman) {
+        for (int i = 0; i < romanNum.length; i++) {
+            if (roman.equals(romanNum[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static String convertToRoman(int arabian) {
+        return romanNum[arabian];
+    }
+}
