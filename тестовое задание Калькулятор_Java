@@ -34,6 +34,10 @@ public class Main {
 
         int result = getResult(operator, n1, n2);
 
+        if (n1>10||n2>10) {
+            throw new Exception("Числа больше десяти вводить нельзя");
+        }
+
         if (isRoman(operand1) && isRoman(operand2)) {
             if (result == 0) {
                 throw new Exception("В римских числах нет нуля");
